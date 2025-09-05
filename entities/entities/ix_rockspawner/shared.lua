@@ -29,7 +29,9 @@ local CONFIG = {
         {id = "gold", probability = 5}
     },
     -- Sound to play when the rock is broken
-    BreakSound = "physics/concrete/boulder_impact_hard4.wav"
+    BreakSound = "physics/concrete/boulder_impact_hard4.wav",
+    -- A weapon that can destroy stone
+    RockWeapon = "weapon_crowbar"
 }
 
 sound.Add({
@@ -119,7 +121,7 @@ function ENT:OnTakeDamage(dmginfo)
     if not IsValid(attacker) or not attacker:IsPlayer() then return end
 
     local weapon = attacker:GetActiveWeapon()
-    if not IsValid(weapon) or weapon:GetClass() ~= "weapon_crowbar" or not self.RockIsSpawn then return end
+    if not IsValid(weapon) or weapon:GetClass() ~= CONFIG.RockWeapon or not self.RockIsSpawn then return end
 
     self.TotalDamage = self.TotalDamage + dmginfo:GetDamage()
     if self.TotalDamage >= self.RockHealth then
