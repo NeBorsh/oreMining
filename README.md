@@ -4,33 +4,37 @@ A plugin for helix that will add the ability to mine ore to your server.
 > To start working, you just need to spawn the ore spawner entity, and also slightly edit the file `entities/entities/ix_rockspawner/shared.lua`
 ---------------------
 ### Actions in `entities/entities/ix_rockspawner/shared.lua`
-You can specify a new item that can fall from the rock, for this you need to register it in the `items folder`, and then add its id and chance in percent in the `items table`. In the `rockModels table` you can add, change or delete rock models.
-
-In order to change the sound, you will need to change the line in the following code:
+You can configure everything you need in the following part of the code:
 ```lua
-sound.Add( {
-	name = "rock_hasb_broken",
-	channel = CHAN_STATIC,
-	volume = 1.0,
-	level = 80,
-	pitch = {95, 110},
-	sound = "physics/concrete/boulder_impact_hard4.wav" -- <==
-} )
-```
-
-To change the model of the stone while it is broken you need to change the line here:
-```lua
-  self.RockHealth = 1250
-
-	self:SetModel("models/props_junk/rock001a.mdl") -- <==
-	self:SetMoveType(MOVETYPE_NONE)
-	self:SetSolid(SOLID_VPHYSICS)
-```
-
-You can change the weapon that will be used for mining here:
-```lua
-    if dmginfo:GetDamageType() == DMG_SLASH and dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "tfa_nmrih_pickaxe" and self.RockIsSpawn then
-                                                                                                        ^^^^^^^^^^^^^^^
+local CONFIG = {
+    -- Admin-only spawning (true/false)
+    AdminOnly = true,
+    -- Rock health (how much damage required to break)
+    RockHealth = 100,
+    -- Time (in seconds) before the rock model appears after spawning
+    RockSpawnTime = 6,
+    -- List of possible rock models
+    RockModels = {
+        "models/props_wasteland/rockgranite03c.mdl",
+        "models/props_wasteland/rockgranite03b.mdl",
+        "models/props_wasteland/rockgranite03a.mdl",
+        "models/props_wasteland/rockgranite02c.mdl",
+        "models/props_wasteland/rockgranite02b.mdl",
+        "models/props_wasteland/rockgranite02a.mdl"
+    },
+    -- Items to drop and their probabilities (total should be 100)
+    Items = {
+        {id = "coal", probability = 50},
+        {id = "copper", probability = 15},
+        {id = "iron", probability = 15},
+        {id = "silver", probability = 10},
+        {id = "gold", probability = 5}
+    },
+    -- Sound to play when the rock is broken
+    BreakSound = "physics/concrete/boulder_impact_hard4.wav",
+    -- A weapon that can destroy stone
+    RockWeapon = "weapon_crowbar"
+}
 ```
 ---------------------
 ### Installation
